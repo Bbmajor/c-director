@@ -1,0 +1,35 @@
+/*! cDirector main.css */
+body {
+  color: whitesmoke;
+  background-color: black;
+}
+.navbar-nav {
+  width: 100%;
+}
+.navbar-text {
+  font-size: 1.5rem;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.navbar-brand {
+  font-size: 1.75rem;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.carousel-caption {
+  top: 20px;
+  bottom: 20px;
+  padding-top: 0;
+  padding-bottom: 0;
+  left: 40px;
+  right: 40px;
+  z-index: 0;
+  text-align: inherit;
+  color: inherit;
+}
+.carousel-control-prev {
+  width: 5%;
+}
+.carousel-control-next {
+  width: 5%;
+}
