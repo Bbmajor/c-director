@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 import { mapStores } from 'pinia';
 import { useMediaPlayerStore } from '@/stores/MediaPlayerStore';
 
@@ -8,13 +8,11 @@ import MediaPlayer from '@/components/MediaPlayer.vue';
 
 export default {
   name: 'PlayerView',
-
   components: {
     NavBarTitle,
     MediaSelector,
     MediaPlayer,
   },
-
   computed: {
     ...mapStores(useMediaPlayerStore),
   },

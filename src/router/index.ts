@@ -1,4 +1,3 @@
-/* -- src\router\index.js -- */
 import { createMemoryHistory, createRouter } from 'vue-router';
 
 import HomeView from '@/views/HomeView.vue';
@@ -12,15 +11,14 @@ import AboutView from '@/views/AboutView.vue';
 const routes = [
   { path: '/', name: 'Home', component: HomeView },
   { path: '/setlist', name: 'Setlist', component: SetlistView },
-  { path: '/transport', name: 'Transport', component: TransportView },
   { path: '/metronome', name: 'Metronome', component: MetronomeView },
+  { path: '/transport', name: 'Transport', component: TransportView },
   { path: '/player', name: 'Player', component: PlayerView },
   { path: '/options', name: 'Options', component: OptionsView },
   { path: '/about', name: 'About', component: AboutView },
 ];
 
 export const router = createRouter({
-  //	base: import.meta.env.BASE_URL,
   history: createMemoryHistory(),
   routes,
 });

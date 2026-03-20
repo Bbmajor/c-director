@@ -1,18 +1,23 @@
-/* -- src\stores\ShownotesStore.js -- */
 import { defineStore } from 'pinia';
+import { type ShowNotesEndPoint, type Slide, type ListenSpec } from '@/types';
 
 export const useShownotesStore = defineStore('shownotes', {
   state: () => ({
-    endPoint: null,
-    items: [],
+    endPoint: {} as ShowNotesEndPoint,
+    items: [] as Slide[],
+
+    listeners: [
+      {
+        event: 'changed',
+        action: 'setItems',
+        listener: null,
+      },
+    ] as ListenSpec[],
   }),
 
   getters: {
     showNoteItems: (state) => {
-      var items = [];
-      if (state.items) {
-        items = state.items;
-      }
+      const items = state.items;
       return items
         .map(splitItem)
         .flat()
@@ -23,45 +28,83 @@ export const useShownotesStore = defineStore('shownotes', {
   },
 
   actions: {
-    open(endPoint) {
+    open(endPoint: ShowNotesEndPoint) {
       this.endPoint = endPoint;
-      this.endPoint.on(
-        'changed',
-        (this.listener1 = function () {
-          this.setItems();
-        }.bind(this)),
-      );
-      this.endPoint.open();
+      for (const listen of this.listeners) {
+        this.endPoint.on(
+          listen.event,
+          (listen.listener = this[listen.action].bind(this)),
+        );
+      }
       this.setItems();
     },
 
     close() {
-      this.endPoint.removeListener('changed', this.listener1);
-      this.endPoint.close();
-      this.endPoint = null;
+      if (this.endPoint) {
+        for (const listen of this.listeners) {
+          this.endPoint.removeListener(listen.event, listen.listener);
+        }
+        this.endPoint.close();
+      }
+      this.endPoint = {} as ShowNotesEndPoint;
     },
 
     setItems() {
       if (this.endPoint.items) {
         this.items = this.endPoint.items.map(formatItem);
       } else {
-        this.items = null;
+        this.items = [] as Slide[];
       }
     },
   },
 });
 
+const backgroundColors = [
+  '#000000',
+  '#6B0B0B',
+  '#3B0B0B',
+  '#0B3B0B',
+  '#0B6B0B',
+  '#0B0B6B',
+  '#0B0B3B',
+  '#6B6B0B',
+  '#3B3B0B',
+  '#6B0B6B',
+  '#3B0B3B',
+  '#0B6B6B',
+  '#0B3B3B',
+  '#6B3B0B',
+  '#3B230B',
+];
+const foregroundColors = [
+  '#FFFFFF',
+  '#FF0000',
+  '#800000',
+  '#008000',
+  '#00FF00',
+  '#0000FF',
+  '#000080',
+  '#FFFF00',
+  '#808000',
+  '#FF00FF',
+  '#800080',
+  '#00FFFF',
+  '#008080',
+  '#FF8000',
+  '#804000',
+];
+
 const formatItem = function (item) {
   return {
     hidden: item.hidden,
-    backgroundColor: item.backgroundColor,
+    backgroundColor: backgroundColors[item.backgroundColor],
     text: {
       content: item.text,
       fontsize: item.fontSize,
       fixedPitch: item.fixedPitch,
       bold: item.bold,
       align: item.textAlign,
-      color: item.textColor,
+      color: foregroundColors[item.textColor],
     },
     image: {
       url: item.imageUrl,

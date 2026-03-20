@@ -1,11 +1,10 @@
-<script>
+<script lang="ts">
 import NavBarTitle from '@/components/base/NavBarTitle.vue';
 import RecorderController from '@/components/RecorderController.vue';
 import TransportController from '@/components/TransportController.vue';
 
 export default {
   name: 'TransportView',
-
   components: {
     NavBarTitle,
     RecorderController,

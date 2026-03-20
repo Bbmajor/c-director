@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 import { mapStores } from 'pinia';
 import { useApplicationStore } from '@/stores/ApplicationStore';
 
@@ -6,11 +6,9 @@ import NavBarTitle from '@/components/base/NavBarTitle.vue';
 
 export default {
   name: 'AboutView',
-
   components: {
     NavBarTitle,
   },
-
   computed: {
     ...mapStores(useApplicationStore),
     appTitle: function () {
@@ -30,7 +28,7 @@ export default {
     <BNavbarToggle target="bottom-collapse" />
     <BCollapse id="bottom-collapse" is-nav>
       <BNavbarNav justified style="width: 100%" align="left">
-        <BNavItem to="/options">
+        <BNavItem to="Options">
           <BButton>Options</BButton>
         </BNavItem>
       </BNavbarNav>

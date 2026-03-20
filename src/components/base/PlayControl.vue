@@ -1,18 +1,14 @@
-<script>
-export default {
-  name: 'PlayControl',
+<script lang="ts">
+import { defineComponent } from 'vue';
 
+export default defineComponent({
+  name: 'PlayControl',
   props: {
     playAction: { type: Function, required: true },
     pauseAction: { type: Function, required: true },
     stopAction: { type: Function, required: true },
     playMode: { type: String, default: '' },
   },
-
-  data() {
-    return {};
-  },
-
   computed: {
     stopped: function () {
       return this.playMode == 'stopped';
@@ -27,7 +23,7 @@ export default {
       return this.playMode != '';
     },
   },
-};
+});
 </script>
 
 <template>

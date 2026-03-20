@@ -1,24 +1,18 @@
-<script>
+<script lang="ts">
+import { defineComponent } from 'vue';
 import { mapStores } from 'pinia';
 import { useSongpartsStore } from '@/stores/SongpartsStore';
-
 import ListNavigator from '@/components/base/ListNavigator.vue';
 
-export default {
+export default defineComponent({
   name: 'SongpartSelector',
-
-  data: function () {
-    return {};
-  },
-
   components: {
     ListNavigator,
   },
-
   computed: {
     ...mapStores(useSongpartsStore),
   },
-};
+});
 </script>
 
 <template>

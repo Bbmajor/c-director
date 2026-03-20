@@ -1,14 +1,14 @@
-/* -- src\stores\BindingsStore.js -- */
 import { defineStore } from 'pinia';
-import { useEngineStore } from './EngineStore';
-import { useMediaPlayerStore } from './MediaPlayerStore';
-import { useMetronomeStore } from './MetronomeStore';
-import { useRecorderStore } from './RecorderStore';
-import { useSetlistsStore } from './SetlistsStore';
+import { useEngineStore } from '@/stores/EngineStore';
+import { useMediaPlayerStore } from '@/stores/MediaPlayerStore';
+import { useMetronomeStore } from '@/stores/MetronomeStore';
+import { useRecorderStore } from '@/stores/RecorderStore';
+import { useSetlistsStore } from '@/stores/SetlistsStore';
+import { type Bindings4EndPoint } from '@/types';
 
 export const useBindingsStore = defineStore('bindings', {
   state: () => ({
-    endPoint: null,
+    endPoint: {} as Bindings4EndPoint,
 
     engine: useEngineStore(),
     mediaplayer: useMediaPlayerStore(),
@@ -20,21 +20,21 @@ export const useBindingsStore = defineStore('bindings', {
   getters: {},
 
   actions: {
-    open(endPoint) {
+    open(endPoint: Bindings4EndPoint) {
       this.endPoint = endPoint;
 
       this.engine.open();
+      this.setlists.open();
       this.metronome.open();
       this.recorder.open();
       this.mediaplayer.open();
-      this.setlists.open();
 
       this.endPoint.open();
     },
 
     close() {
       this.endPoint.close();
-      this.endPoint = null;
+      this.endPoint = {} as Bindings4EndPoint;
     },
 
     invoke({

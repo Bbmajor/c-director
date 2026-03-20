@@ -1,40 +1,36 @@
-<script>
+<script lang="ts">
+import { defineComponent } from 'vue';
 import { mapStores } from 'pinia';
 import { useMetronomeStore } from '@/stores/MetronomeStore';
 
-export default {
+export default defineComponent({
   name: 'TempoSelector',
-
-  data: function () {
-    return {};
-  },
-
   computed: {
     ...mapStores(useMetronomeStore),
   },
-};
+  methods: {
+    toggleSounds() {
+      this.metronomeStore.enableSounds(!this.metronomeStore.soundsEnabled);
+    },
+  },
+});
 </script>
 
 <template>
   <BNavbarNav fill>
     <BNavItem>
-      <BFormCheckbox
-        switch
-        id="checkbox-sound"
-        :v-model="metronomeStore.soundsEnabled"
-        @update:model-value="metronomeStore.enableSounds"
-        >Enable Sounds</BFormCheckbox
-      >
+      <BButton id="sound" pill variant="outline-light" @click="toggleSounds">
+        <IBiVolumeUp v-if="metronomeStore.soundsEnabled" height="2em" />
+        <IBiVolumeMute v-else height="2em" />
+      </BButton>
     </BNavItem>
-    <BNavItem>
-      <BNavText class="mx-3">{{ metronomeStore.tempo }} bpm</BNavText>
-    </BNavItem>
-    <BNavItem>
+    <BNavItem class="mx-3">
       <BFormSpinbutton
         id="sb-tempo-index"
         v-model="metronomeStore.tempo"
         min="5"
         max="300"
+        :formatter-fn="(value: number) => value + ' bpm'"
         @change="metronomeStore.selectTempo"
       />
     </BNavItem>

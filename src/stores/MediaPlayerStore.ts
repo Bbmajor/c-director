@@ -1,6 +1,7 @@
 /* -- src\stores\MediaPlayerStore.js -- */
 import { defineStore } from 'pinia';
-import { useBindingsStore } from './BindingsStore';
+import { useBindingsStore } from '@/stores/BindingsStore';
+import { type WatchSpec, type Binding4Watcher } from '@/types';
 
 const $rack = 0; // rack index; 0=Song,
 const mediaStateText = ['stopped', 'playing', 'paused'];
@@ -8,15 +9,26 @@ const mediaStateText = ['stopped', 'playing', 'paused'];
 export const useMediaPlayerStore = defineStore('mediaplayer', {
   state: () => ({
     bindableId: 'indexedMediaPlayer',
-    watch: {
-      // specify bindingPointId: callback function name
-      name: 'setPlayerName',
-      selectedFileIndex: 'setFileIndex',
-      selectedFileName: 'setFileName',
-      selectedPlayRangeIndexed: 'setRangeIndex',
-      state: 'setPlayerState',
-    },
-    watchers: [],
+
+    watchers: [
+      { bindingPointId: 'name', action: 'setPlayerName', watcher: null },
+      {
+        bindingPointId: 'selectedFileIndex',
+        action: 'setFileIndex',
+        watcher: {} as Binding4Watcher,
+      },
+      {
+        bindingPointId: 'selectedFileName',
+        action: 'setFileName',
+        watcher: {} as Binding4Watcher,
+      },
+      {
+        bindingPointId: 'selectedPlayRangeIndexed',
+        action: 'setRangeIndex',
+        watcher: {} as Binding4Watcher,
+      },
+      { bindingPointId: 'state', action: 'setPlayerState', watcher: null },
+    ] as WatchSpec[],
 
     mediaState: '',
     player: { index: 0, name: 'No Player' },
@@ -37,15 +49,13 @@ export const useMediaPlayerStore = defineStore('mediaplayer', {
 
   actions: {
     open() {
-      for (const [bindingPointId, callback] of Object.entries(this.watch)) {
-        this.watchers.push(
-          this.bindingsStore.watchBindingPoint({
-            bindableId: this.bindableId,
-            bindingPointId: bindingPointId,
-            bindableParams: this.bindableParams,
-            callback: this[callback],
-          }),
-        );
+      for (const watch of this.watchers) {
+        watch.watcher = this.bindingsStore.watchBindingPoint({
+          bindableId: this.bindableId,
+          bindingPointId: watch.bindingPointId,
+          bindableParams: this.bindableParams,
+          callback: this[watch.action],
+        });
       }
     },
 

@@ -1,23 +1,18 @@
-<script>
-import PlayControl from '@/components/base/PlayControl.vue';
+<script lang="ts">
+import { defineComponent } from 'vue';
 import { mapStores } from 'pinia';
+import PlayControl from '@/components/base/PlayControl.vue';
 import { useMediaPlayerStore } from '@/stores/MediaPlayerStore';
 
-export default {
+export default defineComponent({
   name: 'MediaPlayer',
-
   components: {
     PlayControl,
   },
-
-  data: function () {
-    return {};
-  },
-
   computed: {
     ...mapStores(useMediaPlayerStore),
   },
-};
+});
 </script>
 
 <template>

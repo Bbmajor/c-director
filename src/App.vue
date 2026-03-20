@@ -1,30 +1,30 @@
-<script>
+<script lang="ts">
+import { defineComponent } from 'vue';
 import { useCantabileStore } from '@/stores/CantabileStore';
 import ShowNotesView from '@/views/ShowNotesView.vue';
 
-export default {
+export default defineComponent({
   name: 'App',
   components: { ShowNotesView },
-  cantabileStore: null,
 
   data: function () {
-    return {};
+    return {
+      cantabileStore: useCantabileStore(),
+    };
   },
 
   mounted: function () {
-    this.cantabileStore = useCantabileStore();
-    // eslint-disable-next-line no-undef
-    this.cantabileStore.connect(new Cantabile());
+    this.cantabileStore.connect(new globalThis.Cantabile());
   },
 
   beforeUnmount: function () {
     this.cantabileStore.disconnect();
   },
-};
+});
 </script>
 
 <template>
-  <BApp>
+  <BApp no-orchestrator>
     <ShowNotesView />
     <RouterView />
   </BApp>

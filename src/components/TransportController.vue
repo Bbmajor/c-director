@@ -1,24 +1,19 @@
-<script>
+<script lang="ts">
+import { defineComponent } from 'vue';
 import { mapStores } from 'pinia';
 import { useTransportStore } from '@/stores/TransportStore';
 
 import PlayControl from '@/components/base/PlayControl.vue';
 
-export default {
+export default defineComponent({
   name: 'TransportController',
-
   components: {
     PlayControl,
   },
-
-  data: function () {
-    return {};
-  },
-
   computed: {
     ...mapStores(useTransportStore),
   },
-};
+});
 </script>
 
 <template>

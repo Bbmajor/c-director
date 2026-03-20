@@ -1,18 +1,25 @@
 /* -- src\stores\MetronomeStore.js -- */
 import { defineStore } from 'pinia';
-import { useBindingsStore } from './BindingsStore';
+import { useBindingsStore } from '@/stores/BindingsStore';
+import { type WatchSpec, type Binding4Watcher } from '@/types';
 
 const recorderStates = ['Not Recording', 'Waiting', 'Recording'];
 
 export const useRecorderStore = defineStore('recorder', {
   state: () => ({
     bindableId: 'recorder',
-    watch: {
-      // specify bindingPointId: 'callback function name'
-      toggleRecording: 'setRecording',
-      toggleAutoRecord: 'setAutoRecord',
-    },
-    watchers: [],
+    watchers: [
+      {
+        bindingPointId: 'toggleRecording',
+        action: 'setRecording',
+        watcher: {} as Binding4Watcher,
+      },
+      {
+        bindingPointId: 'toggleAutoRecord',
+        action: 'setAutoRecord',
+        watcher: {} as Binding4Watcher,
+      },
+    ] as WatchSpec[],
 
     recording: 0,
     autoRecord: 0,
@@ -42,14 +49,12 @@ export const useRecorderStore = defineStore('recorder', {
 
   actions: {
     open() {
-      for (const [bindingPointId, callback] of Object.entries(this.watch)) {
-        this.watchers.push(
-          this.bindingsStore.watchBindingPoint({
-            bindableId: this.bindableId,
-            bindingPointId: bindingPointId,
-            callback: this[callback],
-          }),
-        );
+      for (const watch of this.watchers) {
+        watch.watcher = this.bindingsStore.watchBindingPoint({
+          bindableId: this.bindableId,
+          bindingPointId: watch.bindingPointId,
+          callback: this[watch.action],
+        });
       }
     },
 

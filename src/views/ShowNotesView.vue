@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 import { useShownotesStore } from '@/stores/ShownotesStore';
 import { mapStores } from 'pinia';
 
@@ -7,11 +7,6 @@ import ShowNotes from '@/components/ShowNotes.vue';
 export default {
   name: 'ShowNotesView',
   components: { ShowNotes },
-
-  data: function () {
-    return {};
-  },
-
   computed: {
     ...mapStores(useShownotesStore),
 
@@ -23,11 +18,6 @@ export default {
 </script>
 
 <template>
-  <ShowNotes v-if="hasShowNotes" />
-  <BImg
-    v-else
-    src="/c-brand-alpha.png"
-    fluid-grow
-    :style="shownotesStore.imageStyles"
-  ></BImg>
+  <ShowNotes v-if="hasShowNotes" :items="shownotesStore.showNoteItems" />
+  <BImg v-else src="/c-brand-alpha.png" fluid-grow></BImg>
 </template>

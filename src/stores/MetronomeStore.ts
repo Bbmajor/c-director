@@ -1,6 +1,7 @@
 /* -- src\stores\MetronomeStore.js -- */
 import { defineStore } from 'pinia';
-import { useBindingsStore } from './BindingsStore';
+import { useBindingsStore } from '@/stores/BindingsStore';
+import { type WatchSpec, type Binding4Watcher } from '@/types';
 
 export const useMetronomeStore = defineStore('metronome', {
   state: () => ({
@@ -11,14 +12,28 @@ export const useMetronomeStore = defineStore('metronome', {
     numerator: 4,
     denominatorp2: 2,
 
-    watch: {
-      // specify bindingPointId: 'callback function name'
-      enableSounds: 'setSounds',
-      tempo: 'setTempo',
-      timeSignatureNumerator: 'setNumerator',
-      timeSignatureDenominator2Power: 'setDenominatorp2',
-    },
-    watchers: [],
+    watchers: [
+      {
+        bindingPointId: 'enableSounds',
+        action: 'setSounds',
+        watcher: {} as Binding4Watcher,
+      },
+      {
+        bindingPointId: 'tempo',
+        action: 'setTempo',
+        watcher: {} as Binding4Watcher,
+      },
+      {
+        bindingPointId: 'timeSignatureNumerator',
+        action: 'setNumerator',
+        watcher: {} as Binding4Watcher,
+      },
+      {
+        bindingPointId: 'timeSignatureDenominator2Power',
+        action: 'setDenominatorp2',
+        watcher: {} as Binding4Watcher,
+      },
+    ] as WatchSpec[],
 
     bindingsStore: useBindingsStore(),
   }),
@@ -27,24 +42,20 @@ export const useMetronomeStore = defineStore('metronome', {
     soundsEnabled: (state) => {
       return state.sounds == 1;
     },
-    beatsPerMeasure: (state) => {
-      return Math.pow(2, state.denominatorp2);
-    },
+
     signature: (state) => {
-      return state.numerator + '/' + state.beatsPerMeasure;
+      return state.numerator + '/' + Math.pow(2, state.denominatorp2);
     },
   },
 
   actions: {
     open() {
-      for (const [bindingPointId, callback] of Object.entries(this.watch)) {
-        this.watchers.push(
-          this.bindingsStore.watchBindingPoint({
-            bindableId: this.bindableId,
-            bindingPointId: bindingPointId,
-            callback: this[callback],
-          }),
-        );
+      for (const watch of this.watchers) {
+        watch.watcher = this.bindingsStore.watchBindingPoint({
+          bindableId: this.bindableId,
+          bindingPointId: watch.bindingPointId,
+          callback: this[watch.action],
+        });
       }
     },
 
@@ -64,7 +75,7 @@ export const useMetronomeStore = defineStore('metronome', {
       });
     },
 
-    enableSounds(sounds) {
+    enableSounds(sounds: boolean) {
       this.bindingsStore.invoke({
         bindableId: this.bindableId,
         bindingPointId: 'enableSounds',
@@ -72,7 +83,7 @@ export const useMetronomeStore = defineStore('metronome', {
       });
     },
 
-    selectTempo(tempo) {
+    selectTempo(tempo: number) {
       this.bindingsStore.invoke({
         bindableId: this.bindableId,
         bindingPointId: 'tempo',

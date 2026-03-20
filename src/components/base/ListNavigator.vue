@@ -1,7 +1,8 @@
-<script>
-export default {
-  name: 'ListNavigator',
+<script lang="ts">
+import { defineComponent } from 'vue';
 
+export default defineComponent({
+  name: 'ListNavigator',
   props: {
     firstAction: { type: Function, required: true },
     previousAction: { type: Function, required: true },
@@ -10,11 +11,7 @@ export default {
     disabled: { type: Boolean, default: false },
     itemName: { type: String, default: '--' },
   },
-
-  data() {
-    return {};
-  },
-};
+});
 </script>
 
 <template>

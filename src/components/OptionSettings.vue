@@ -1,13 +1,13 @@
-<script>
+<script lang="ts">
 import { mapStores } from 'pinia';
+import { defineComponent } from 'vue';
 import { usePreferencesStore } from '@/stores/PreferencesStore';
+import { type OptionKey } from '@/types';
 
-export default {
+export default defineComponent({
   name: 'OptionSettings',
-  vModel: [],
-
   data: function () {
-    return {};
+    return { selected: [] as OptionKey[] };
   },
 
   computed: {
@@ -15,9 +15,9 @@ export default {
   },
 
   created: function () {
-    this.vModel = this.preferencesStore.settings;
+    this.selected = this.preferencesStore.settings;
   },
-};
+});
 </script>
 
 <template>
@@ -25,7 +25,7 @@ export default {
     <BNavForm>
       <BFormCheckboxGroup
         id="checkbox-group-1"
-        v-model="vModel"
+        v-model="selected"
         :options="preferencesStore.options"
         text-field="text"
         @update:model-value="preferencesStore.setSettings"

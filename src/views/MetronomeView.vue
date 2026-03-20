@@ -1,11 +1,10 @@
-<script>
+<script lang="ts">
 import NavBarTitle from '@/components/base/NavBarTitle.vue';
 import TimeSignatureSelector from '@/components/TimeSignatureSelector.vue';
 import TempoSelector from '@/components/TempoSelector.vue';
 
 export default {
   name: 'MetronomeView',
-
   components: {
     NavBarTitle,
     TimeSignatureSelector,

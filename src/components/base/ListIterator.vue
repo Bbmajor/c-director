@@ -1,18 +1,15 @@
-<script>
-export default {
-  name: 'ListIterator',
+<script lang="ts">
+import { defineComponent } from 'vue';
 
+export default defineComponent({
+  name: 'ListIterator',
   props: {
     previousAction: { type: Function, required: true },
     nextAction: { type: Function, required: true },
     disabled: { type: Boolean, default: false },
     itemName: { type: String, default: '--' },
   },
-
-  data() {
-    return {};
-  },
-};
+});
 </script>
 
 <template>

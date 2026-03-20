@@ -1,24 +1,14 @@
-<script>
+<script lang="ts">
 import { mapStores } from 'pinia';
+import { defineComponent } from 'vue';
 import { useMetronomeStore } from '@/stores/MetronomeStore';
 
-export default {
+export default defineComponent({
   name: 'TimeSignatureSelector',
-
-  data: function () {
-    return {};
-  },
-
   computed: {
     ...mapStores(useMetronomeStore),
   },
-
-  methods: {
-    beatsPerMeasure: function (value) {
-      return Math.pow(2, value);
-    },
-  },
-};
+});
 </script>
 
 <template>
@@ -38,7 +28,7 @@ export default {
           v-model="metronomeStore.denominatorp2"
           min="1"
           max="4"
-          :formatter-fn="(value) => beatsPerMeasure(value)"
+          :formatter-fn="(value) => Math.pow(2, value)"
           @change="metronomeStore.selectDenominator($event)"
         />
       </BButtonGroup>

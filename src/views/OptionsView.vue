@@ -1,10 +1,9 @@
-<script>
+<script lang="ts">
 import NavBarTitle from '@/components/base/NavBarTitle.vue';
 import OptionSettings from '@/components/OptionSettings.vue';
 
 export default {
   name: 'OptionsView',
-
   components: {
     NavBarTitle,
     OptionSettings,
@@ -21,7 +20,7 @@ export default {
   >
     <BNavbarToggle target="bottom-collapse" />
     <BCollapse id="bottom-collapse" is-nav>
-      <NavBarTitle title="Options" link="/about" />
+      <NavBarTitle title="Options" link="About" />
       <OptionSettings />
     </BCollapse>
   </BNavbar>

@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 import { mapStores } from 'pinia';
 import { useCantabileStore } from '@/stores/CantabileStore';
 
@@ -8,13 +8,11 @@ import MainBarRight from '@/components/MainBarRight.vue';
 
 export default {
   name: 'HomeView',
-
   components: {
     NavBarTitle,
     MainBarLeft,
     MainBarRight,
   },
-
   computed: {
     ...mapStores(useCantabileStore),
   },
@@ -32,7 +30,7 @@ export default {
     <BNavbarToggle target="bottom-collapse" />
     <BCollapse id="bottom-collapse" is-nav>
       <MainBarLeft />
-      <NavBarTitle title="C-Director" link="/about" />
+      <NavBarTitle title="C-Director" link="About" />
       <MainBarRight />
     </BCollapse>
   </BNavbar>

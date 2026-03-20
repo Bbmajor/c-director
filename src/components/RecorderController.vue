@@ -1,26 +1,19 @@
-<script>
+<script lang="ts">
+import { defineComponent } from 'vue';
 import { mapStores } from 'pinia';
 import { useRecorderStore } from '@/stores/RecorderStore';
 
-export default {
+export default defineComponent({
   name: 'RecorderController',
-
-  data: function () {
-    return {};
-  },
-
   computed: {
     ...mapStores(useRecorderStore),
   },
-};
+});
 </script>
 
 <template>
   <BNavbarNav fill align="center">
-    <BNavForm
-      class="d-flex justify-content-center"
-      @submit.stop.prevent="alert('Form Submitted')"
-    >
+    <BNavForm class="d-flex justify-content-center">
       <BButtonGroup>
         <BButton
           variant="outline-light"

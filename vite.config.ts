@@ -5,12 +5,20 @@ import Components from 'unplugin-vue-components/vite';
 import IconsResolve from 'unplugin-icons/resolver';
 import { BootstrapVueNextResolver } from 'bootstrap-vue-next/resolvers';
 import { fileURLToPath } from 'node:url';
+import packageJson from './package.json';
 
 // https://vite.dev/config/
 export default defineConfig({
+  define: {
+    __APP_VERSION__: JSON.stringify(packageJson.version),
+  },
+
   build: {
     emptyOutDir: true,
     outDir: 'Root.webfolder',
+    rolldownOptions: {
+      external: 'cantabile-js',
+    },
   },
 
   server: {

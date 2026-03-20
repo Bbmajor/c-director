@@ -1,25 +1,16 @@
-<script>
+<script lang="ts">
+import { defineComponent } from 'vue';
 import { mapStores } from 'pinia';
 import { useMediaPlayerStore } from '@/stores/MediaPlayerStore';
-import ListIterator from './base/ListIterator.vue';
+import ListIterator from '@/components/base/ListIterator.vue';
 
-export default {
+export default defineComponent({
   name: 'MediaSelector',
-
   components: { ListIterator },
-
-  data: function () {
-    return {};
-  },
-
   computed: {
     ...mapStores(useMediaPlayerStore),
-
-    visible: function () {
-      return this.mediaplayerStore.mediaState != '';
-    },
   },
-};
+});
 </script>
 
 <template>

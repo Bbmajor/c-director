@@ -1,16 +1,15 @@
 /* -- src\stores\ApplicationStore.js -- */
 import { defineStore } from 'pinia';
+import { type ApplicationEndPoint } from '@/types';
 
 export const useApplicationStore = defineStore('application', {
   state: () => ({
-    endPoint: null,
+    endPoint: {} as ApplicationEndPoint,
+
+    appVersion: globalThis.__APP_VERSION__,
   }),
 
   getters: {
-    appVersion: () => {
-      return '0.0.0';
-    }, // process.env.PACKAGE_VERSION ||
-
     companyName: (state) => {
       return state.endPoint.companyName;
     },
@@ -26,14 +25,14 @@ export const useApplicationStore = defineStore('application', {
   },
 
   actions: {
-    open(endPoint) {
+    open(endPoint: ApplicationEndPoint) {
       this.endPoint = endPoint;
       this.endPoint.open();
     },
 
-    close({ commit, state }) {
+    close() {
       this.endPoint.close();
-      this.endPoint = null;
+      this.endPoint = {} as ApplicationEndPoint;
     },
   },
 });
