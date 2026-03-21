@@ -1,5 +1,4 @@
 import { defineStore } from 'pinia';
-import { useEngineStore } from '@/stores/EngineStore';
 import { useMediaPlayerStore } from '@/stores/MediaPlayerStore';
 import { useMetronomeStore } from '@/stores/MetronomeStore';
 import { useRecorderStore } from '@/stores/RecorderStore';
@@ -9,7 +8,6 @@ export const useBindingsStore = defineStore('bindings', {
   state: () => ({
     endPoint: {} as Bindings4EndPoint,
 
-    engine: useEngineStore(),
     mediaplayer: useMediaPlayerStore(),
     metronome: useMetronomeStore(),
     recorder: useRecorderStore(),
@@ -21,7 +19,7 @@ export const useBindingsStore = defineStore('bindings', {
     open(endPoint: Bindings4EndPoint) {
       this.endPoint = endPoint;
 
-      this.engine.open();
+      //this.engine.open();
       this.metronome.open();
       this.recorder.open();
       this.mediaplayer.open();
