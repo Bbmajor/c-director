@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { type CantabileEventEmitter, type ListenSpec } from '@/types';
+import { type CantabileApi, type ListenSpec } from '@/types';
 
 import { usePreferencesStore } from '@/stores/PreferencesStore';
 import { useApplicationStore } from '@/stores/ApplicationStore';
@@ -9,10 +9,11 @@ import { useSetlistStore } from '@/stores/SetlistStore';
 import { useSongpartsStore } from '@/stores/SongpartsStore';
 import { useSongStore } from '@/stores/SongStore';
 import { useShownotesStore } from '@/stores/ShownotesStore';
+import { useEngineStore } from '@/stores/EngineStore';
 
-export const useCantabileStore = defineStore('cantabile', {
+export const useCantabileApi = defineStore('cantabileApi', {
   state: () => ({
-    endPoint: {} as CantabileEventEmitter,
+    api: {} as CantabileApi,
     connectionState: 'Disconnected',
 
     preferencesStore: usePreferencesStore(),
@@ -23,6 +24,7 @@ export const useCantabileStore = defineStore('cantabile', {
     songpartsStore: useSongpartsStore(),
     songStore: useSongStore(),
     shownotesStore: useShownotesStore(),
+    engineStore: useEngineStore(),
 
     listeners: [
       {
@@ -50,26 +52,27 @@ export const useCantabileStore = defineStore('cantabile', {
   },
 
   actions: {
-    async connect(endPoint: CantabileEventEmitter) {
+    async connect(api: CantabileApi) {
       this.preferencesStore.open();
       for (const listen of this.listeners) {
-        endPoint.on(
+        api.on(
           listen.event,
           (listen.listener = this[listen.action].bind(this)),
         );
       }
-      endPoint.connect();
-      await endPoint.untilConnected();
+      api.connect();
+      await api.untilConnected();
 
-      this.endPoint = endPoint;
+      this.api = api;
 
-      this.applicationStore.open(this.endPoint.application);
-      this.bindingsStore.open(this.endPoint.bindings4);
-      this.transportStore.open(this.endPoint.transport);
-      this.setlistStore.open(this.endPoint.setList);
-      this.songpartsStore.open(this.endPoint.songStates);
-      this.songStore.open(this.endPoint.song);
-      this.shownotesStore.open(this.endPoint.showNotes);
+      this.applicationStore.open(this.api.application);
+      this.bindingsStore.open(this.api.bindings4);
+      this.transportStore.open(this.api.transport);
+      this.setlistStore.open(this.api.setList);
+      this.songpartsStore.open(this.api.songStates);
+      this.songStore.open(this.api.song);
+      this.shownotesStore.open(this.api.showNotes);
+      this.engineStore.open(this.api.engine);
     },
 
     disconnect() {
@@ -81,13 +84,13 @@ export const useCantabileStore = defineStore('cantabile', {
       this.bindingsStore.close();
       this.applicationStore.close();
 
-      if (this.endPoint) {
+      if (this.api) {
         for (const listen of this.listeners) {
-          this.endPoint.removeListener(listen.event, listen.listener);
+          this.api.removeListener(listen.event, listen.listener);
         }
-        this.endPoint.disconnect();
+        this.api.disconnect();
       }
-      this.endPoint = {} as CantabileEventEmitter;
+      this.api = {} as CantabileApi;
     },
 
     setConnecting() {

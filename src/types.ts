@@ -18,6 +18,15 @@ export type SongEndPoint = EndPoint & {
   pr: number;
 };
 
+export type Engine = {
+  // Methods
+  isStarted: () => Promise<boolean>;
+  restart: () => Promise<void>;
+  start(): () => Promise<void>;
+  startStop(): () => Promise<void>;
+  stop(): () => Promise<void>;
+};
+
 export type TransportEndPoint = EndPoint & {
   // Methods
   cycleLoopMode: () => void;
@@ -204,7 +213,7 @@ export type ApplicationEndPoint = EndPoint & {
   version: string;
 };
 
-export type CantabileEventEmitter = EventEmitter & {
+export type CantabileApi = EventEmitter & {
   // Methods
   connect: () => void;
   disconnect: () => void;
@@ -219,10 +228,10 @@ export type CantabileEventEmitter = EventEmitter & {
   song: SongEndPoint;
   songStates: SongPartsEndPoint;
   transport: TransportEndPoint;
+  engine: Engine;
   // unused
   onscreenKeyboard: EndPoint;
   commands: EndPoint;
-  engine: EndPoint;
   keyRanges: EndPoint;
   variables: EndPoint;
 };

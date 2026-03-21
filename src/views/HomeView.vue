@@ -1,6 +1,5 @@
 <script lang="ts">
-import { mapStores } from 'pinia';
-import { useCantabileStore } from '@/stores/CantabileStore';
+import { useCantabileApi } from '@/stores/CantabileApi';
 
 import NavBarTitle from '@/components/base/NavBarTitle.vue';
 import MainBarLeft from '@/components/MainBarLeft.vue';
@@ -13,15 +12,17 @@ export default {
     MainBarLeft,
     MainBarRight,
   },
-  computed: {
-    ...mapStores(useCantabileStore),
+  data: function () {
+    return {
+      cantabileApi: useCantabileApi(),
+    };
   },
 };
 </script>
 
 <template>
   <BNavbar
-    v-if="cantabileStore.isConnected"
+    v-if="cantabileApi.isConnected"
     toggleable="md"
     fixed="bottom"
     variant="dark"
@@ -35,6 +36,6 @@ export default {
     </BCollapse>
   </BNavbar>
   <BNavbar v-else fixed="bottom" variant="dark" v-b-color-mode="'dark'">
-    <NavBarTitle :title="cantabileStore.connectionState" />
+    <NavBarTitle :title="cantabileApi.connectionState" />
   </BNavbar>
 </template>

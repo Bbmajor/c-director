@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { useCantabileStore } from '@/stores/CantabileStore';
+import { useCantabileApi } from '@/stores/CantabileApi';
 import ShowNotesView from '@/views/ShowNotesView.vue';
 
 export default defineComponent({
@@ -9,16 +9,16 @@ export default defineComponent({
 
   data: function () {
     return {
-      cantabileStore: useCantabileStore(),
+      cantabileApi: useCantabileApi(),
     };
   },
 
   mounted: function () {
-    this.cantabileStore.connect(new globalThis.Cantabile());
+    this.cantabileApi.connect(new globalThis.Cantabile());
   },
 
   beforeUnmount: function () {
-    this.cantabileStore.disconnect();
+    this.cantabileApi.disconnect();
   },
 });
 </script>
