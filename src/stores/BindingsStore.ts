@@ -3,7 +3,6 @@ import { useEngineStore } from '@/stores/EngineStore';
 import { useMediaPlayerStore } from '@/stores/MediaPlayerStore';
 import { useMetronomeStore } from '@/stores/MetronomeStore';
 import { useRecorderStore } from '@/stores/RecorderStore';
-import { useSetlistsStore } from '@/stores/SetlistsStore';
 import { type Bindings4EndPoint } from '@/types';
 
 export const useBindingsStore = defineStore('bindings', {
@@ -14,7 +13,6 @@ export const useBindingsStore = defineStore('bindings', {
     mediaplayer: useMediaPlayerStore(),
     metronome: useMetronomeStore(),
     recorder: useRecorderStore(),
-    setlists: useSetlistsStore(),
   }),
 
   getters: {},
@@ -24,7 +22,6 @@ export const useBindingsStore = defineStore('bindings', {
       this.endPoint = endPoint;
 
       this.engine.open();
-      this.setlists.open();
       this.metronome.open();
       this.recorder.open();
       this.mediaplayer.open();
