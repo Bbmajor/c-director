@@ -119,7 +119,7 @@ export type SetListItem = {
 };
 export type SetListEndPoint = EndPoint & {
   // Methods
-  available: () => string[];
+  available: () => Promise<string[]>;
   loadFirstSong: (delayed?: boolean) => void;
   loadLastSong: (delayed?: boolean) => void;
   loadNextSong: (direction: number, delayed?: boolean, wrap?: boolean) => void;

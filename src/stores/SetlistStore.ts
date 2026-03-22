@@ -9,6 +9,8 @@ export const useSetlistStore = defineStore('setlist', {
   state: () => ({
     endPoint: {} as SetListEndPoint,
 
+    setlists: [] as string[],
+
     setlistName: 'No Set List',
     setlistItems: [] as SetListItem[],
     currentSongIndex: 0,
@@ -24,6 +26,11 @@ export const useSetlistStore = defineStore('setlist', {
       {
         event: 'currentSongChanged',
         action: 'handleCurrentSongChanged',
+        listener: null,
+      },
+      {
+        event: 'reload',
+        action: 'handleChanged',
         listener: null,
       },
     ] as ListenSpec[],
@@ -66,11 +73,16 @@ export const useSetlistStore = defineStore('setlist', {
       this.setSetlistItems(this.endPoint.items);
       this.setSetlistName(this.endPoint.name);
       this.setPreLoaded(this.endPoint.preLoaded);
+      this.endPoint.available().then(this.setSetlists, this.noSetlists);
     },
 
     handleCurrentSongChanged() {
       this.setCurrentSong(this.endPoint.currentSong);
       this.setCurrentSongIndex(this.endPoint.currentSongIndex);
+    },
+
+    loadSetlist(name) {
+      this.endPoint.loadSetList(name, true);
     },
 
     first() {
@@ -87,6 +99,14 @@ export const useSetlistStore = defineStore('setlist', {
 
     previous() {
       this.endPoint.loadNextSong(-1);
+    },
+
+    setSetlists(setlists: string[]) {
+      this.setlists = setlists;
+    },
+
+    noSetlists() {
+      this.setlists = [];
     },
 
     setCurrentSong(song: SetListItem) {

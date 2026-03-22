@@ -2,16 +2,16 @@
 import { mapStores } from 'pinia';
 import { useSetlistStore } from '@/stores/SetlistStore';
 
-import NavBarTitle from '@/components/base/NavBarTitle.vue';
 import SongSelector from '@/components/SongSelector.vue';
 import SongpartSelector from '@/components/SongpartSelector.vue';
+import ListDropdown from '@/components/base/ListDropdown.vue';
 
 export default {
   name: 'SetlistView',
   components: {
-    NavBarTitle,
     SongSelector,
     SongpartSelector,
+    ListDropdown,
   },
   computed: {
     ...mapStores(useSetlistStore),
@@ -28,8 +28,13 @@ export default {
   >
     <BNavbarToggle target="bottom-collapse" />
     <BCollapse id="bottom-collapse" is-nav>
+      <ListDropdown
+        :options="setlistStore.setlists"
+        :action="setlistStore.loadSetlist"
+        :selected="setlistStore.setlistName"
+        title="Set List"
+      />
       <SongSelector />
-      <NavBarTitle :title="setlistStore.setlistName" />
       <SongpartSelector />
     </BCollapse>
   </BNavbar>
