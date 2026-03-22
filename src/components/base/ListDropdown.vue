@@ -1,6 +1,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import type { PropType } from 'vue';
+import { type ListOption } from '@/types';
 
 export default defineComponent({
   name: 'ListDropdown',
@@ -8,7 +9,7 @@ export default defineComponent({
     title: { type: String, required: true },
     link: { type: String, default: '/' },
 
-    options: { type: Array<string>, required: true },
+    options: { type: Array<ListOption>, required: true },
     selected: { type: String, required: true },
     action: Function as PropType<(item: string) => void>,
   },

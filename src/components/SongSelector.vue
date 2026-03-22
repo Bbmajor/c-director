@@ -21,7 +21,9 @@ export default {
       :previous-action="setlistStore.previous"
       :next-action="setlistStore.next"
       :last-action="setlistStore.last"
-      :item-name="setlistStore.currentSongName"
+      :options="setlistStore.songs"
+      :selected="setlistStore.currentSong.pr"
+      :action="setlistStore.loadSong"
     />
   </BNavbarNav>
 </template>

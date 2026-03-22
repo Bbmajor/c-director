@@ -4,6 +4,12 @@ type EventEmitter = {
   on: (event: string, listener: unknown) => void;
 };
 
+export type ListOption = {
+  text: string;
+  value: number | string;
+  disabled: boolean;
+};
+
 export type EndPoint = EventEmitter & {
   // Methods
   close: () => void;

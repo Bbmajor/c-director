@@ -3,6 +3,7 @@ import {
   type SongPartsEndPoint,
   type SongPart,
   type ListenSpec,
+  type ListOption,
 } from '@/types';
 
 export const useSongpartsStore = defineStore('songparts', {
@@ -10,7 +11,7 @@ export const useSongpartsStore = defineStore('songparts', {
     endPoint: {} as SongPartsEndPoint,
 
     name: '',
-    items: [] as SongPart[],
+    items: [] as ListOption[],
     currentPartIndex: -1,
     currentPart: {} as SongPart,
 
@@ -73,6 +74,10 @@ export const useSongpartsStore = defineStore('songparts', {
       this.setCurrentPartIndex(this.endPoint.currentStateIndex);
     },
 
+    loadSongPart(value: number) {
+      this.endPoint.loadStateByProgram(value);
+    },
+
     first() {
       this.endPoint.loadFirstState();
     },
@@ -89,8 +94,10 @@ export const useSongpartsStore = defineStore('songparts', {
       this.endPoint.loadLastState();
     },
 
-    setSongPartItems(items) {
-      this.items = items;
+    setSongPartItems(items: SongPart[]) {
+      this.items = items.map((item) => {
+        return { text: item.name, value: item.pr, disabled: false };
+      });
     },
 
     setCurrentPart(currentPart) {

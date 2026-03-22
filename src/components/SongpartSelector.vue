@@ -23,7 +23,9 @@ export default defineComponent({
       :previous-action="songpartsStore.previous"
       :next-action="songpartsStore.next"
       :last-action="songpartsStore.last"
-      :item-name="songpartsStore.currentPartName"
+      :options="songpartsStore.items"
+      :selected="songpartsStore.currentPart.pr"
+      :action="songpartsStore.loadSongPart"
     />
   </BNavbarNav>
 </template>

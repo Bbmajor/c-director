@@ -3,16 +3,17 @@ import {
   type SetListEndPoint,
   type SetListItem,
   type ListenSpec,
+  type ListOption,
 } from '@/types';
 
 export const useSetlistStore = defineStore('setlist', {
   state: () => ({
     endPoint: {} as SetListEndPoint,
 
-    setlists: [] as string[],
+    setlists: [] as ListOption[],
     currentSetlist: 'No Set List',
 
-    songs: [] as SetListItem[],
+    songs: [] as ListOption[],
     currentSong: {} as SetListItem,
 
     listeners: [
@@ -76,8 +77,12 @@ export const useSetlistStore = defineStore('setlist', {
       this.setCurrentSong(this.endPoint.currentSong);
     },
 
-    loadSetlist(name) {
-      this.endPoint.loadSetList(name, true);
+    loadSetlist(value: string) {
+      this.endPoint.loadSetList(value, true);
+    },
+
+    loadSong(value: number) {
+      this.endPoint.loadSongByProgram(value);
     },
 
     first() {
@@ -97,7 +102,9 @@ export const useSetlistStore = defineStore('setlist', {
     },
 
     setSetlists(setlists: string[]) {
-      this.setlists = setlists;
+      this.setlists = setlists.map((setlistName) => {
+        return { text: setlistName, value: setlistName, disabled: false };
+      });
     },
 
     noSetlists() {
@@ -114,9 +121,15 @@ export const useSetlistStore = defineStore('setlist', {
 
     setSongs(items: SetListItem[]) {
       if (!items) {
-        this.songs = [] as SetListItem[];
+        this.songs = [] as ListOption[];
       } else {
-        this.songs = items;
+        this.songs = items.map((item) => {
+          return {
+            text: item.name,
+            value: item.pr,
+            disabled: item.kind == 'break',
+          };
+        });
       }
     },
 
