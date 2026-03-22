@@ -10,12 +10,10 @@ export const useSetlistStore = defineStore('setlist', {
     endPoint: {} as SetListEndPoint,
 
     setlists: [] as string[],
+    currentSetlist: 'No Set List',
 
-    setlistName: 'No Set List',
-    setlistItems: [] as SetListItem[],
-    currentSongIndex: 0,
+    songs: [] as SetListItem[],
     currentSong: {} as SetListItem,
-    preLoaded: false,
 
     listeners: [
       {
@@ -69,16 +67,13 @@ export const useSetlistStore = defineStore('setlist', {
 
     handleChanged() {
       this.setCurrentSong(this.endPoint.currentSong);
-      this.setCurrentSongIndex(this.endPoint.currentSongIndex);
-      this.setSetlistItems(this.endPoint.items);
-      this.setSetlistName(this.endPoint.name);
-      this.setPreLoaded(this.endPoint.preLoaded);
+      this.setCurrentSetlist(this.endPoint.name);
+      this.setSongs(this.endPoint.items);
       this.endPoint.available().then(this.setSetlists, this.noSetlists);
     },
 
     handleCurrentSongChanged() {
       this.setCurrentSong(this.endPoint.currentSong);
-      this.setCurrentSongIndex(this.endPoint.currentSongIndex);
     },
 
     loadSetlist(name) {
@@ -109,43 +104,27 @@ export const useSetlistStore = defineStore('setlist', {
       this.setlists = [];
     },
 
+    setCurrentSetlist(name: string) {
+      if (!name) {
+        this.currentSetlist = 'No Set List';
+      } else {
+        this.currentSetlist = name;
+      }
+    },
+
+    setSongs(items: SetListItem[]) {
+      if (!items) {
+        this.songs = [] as SetListItem[];
+      } else {
+        this.songs = items;
+      }
+    },
+
     setCurrentSong(song: SetListItem) {
       if (!song) {
         this.currentSong = {} as SetListItem;
       } else {
         this.currentSong = song;
-      }
-    },
-
-    setCurrentSongIndex(index: number) {
-      if (!index) {
-        this.currentSongIndex = 0;
-      } else {
-        this.currentSongIndex = index;
-      }
-    },
-
-    setSetlistItems(items: SetListItem[]) {
-      if (!items) {
-        this.setlistItems = [] as SetListItem[];
-      } else {
-        this.setlistItems = items;
-      }
-    },
-
-    setSetlistName(name) {
-      if (!name) {
-        this.setlistName = 'No Set List';
-      } else {
-        this.setlistName = name;
-      }
-    },
-
-    setPreLoaded(preload) {
-      if (!preload) {
-        this.preLoaded = false;
-      } else {
-        this.preLoaded = true;
       }
     },
   },

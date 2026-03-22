@@ -31,7 +31,7 @@ export default {
       <ListDropdown
         :options="setlistStore.setlists"
         :action="setlistStore.loadSetlist"
-        :selected="setlistStore.setlistName"
+        :selected="setlistStore.currentSetlist"
         title="Set List"
       />
       <SongSelector />
