@@ -30,7 +30,7 @@ export default {
     <BCollapse id="bottom-collapse" is-nav>
       <ListDropdown
         :options="setlistStore.setlists"
-        :selected="setlistStore.currentSetlist"
+        :selected="setlistStore.currentSetlist.value"
         :action="setlistStore.loadSetlist"
         title="Set List"
       />

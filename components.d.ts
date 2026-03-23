@@ -31,6 +31,8 @@ declare module 'vue' {
     BNavText: typeof import('bootstrap-vue-next/components/BNav')['BNavText']
     IBiCircleFill: typeof import('~icons/bi/circle-fill')['default']
     IBiDot: typeof import('~icons/bi/dot')['default']
+    IBiExclamationTriangle: typeof import('~icons/bi/exclamation-triangle')['default']
+    IBiExclamationTriangleFill: typeof import('~icons/bi/exclamation-triangle-fill')['default']
     IBiPauseFill: typeof import('~icons/bi/pause-fill')['default']
     IBiPlayFill: typeof import('~icons/bi/play-fill')['default']
     IBiSkipBackwardFill: typeof import('~icons/bi/skip-backward-fill')['default']

@@ -6,7 +6,7 @@ type EventEmitter = {
 
 export type ListOption = {
   text: string;
-  value: number | string;
+  value: number;
   disabled: boolean;
 };
 

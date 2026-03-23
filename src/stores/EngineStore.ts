@@ -4,17 +4,17 @@ import { type Engine } from '@/types';
 export const useEngineStore = defineStore('engine', {
   state: () => ({
     engine: {} as Engine,
+    started: false,
   }),
 
-  getters: {
-    isStarted(state) {
-      return state.engine.isStarted();
-    },
-  },
+  getters: {},
 
   actions: {
-    open(engine: Engine) {
-      this.engine = engine;
+    async open(engine: Engine) {
+      await engine.isStarted().then((value) => {
+        this.engine = engine;
+        this.started = value;
+      });
     },
 
     close() {

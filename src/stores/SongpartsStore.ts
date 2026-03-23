@@ -6,14 +6,18 @@ import {
   type ListOption,
 } from '@/types';
 
+const noParts = {
+  text: 'No Parts',
+  value: -1,
+  disabled: true,
+};
+
 export const useSongpartsStore = defineStore('songparts', {
   state: () => ({
     endPoint: {} as SongPartsEndPoint,
 
-    name: '',
-    items: [] as ListOption[],
-    currentPartIndex: -1,
-    currentPart: {} as SongPart,
+    songParts: [noParts] as ListOption[],
+    currentPart: {} as ListOption,
 
     listeners: [
       {
@@ -31,14 +35,13 @@ export const useSongpartsStore = defineStore('songparts', {
 
   getters: {
     disabled: function (state) {
-      return state.currentPartIndex == -1;
+      return state.currentPart.value == -1;
     },
     currentPartName: function (state) {
-      if (state.currentPart) {
-        return state.currentPart.name;
-      } else {
-        return 'No Song Part';
-      }
+      return state.currentPart.text;
+    },
+    currentPartProgram: function (state) {
+      return state.currentPart.value;
     },
   },
 
@@ -65,13 +68,33 @@ export const useSongpartsStore = defineStore('songparts', {
 
     handleCurrentStateChanged() {
       this.setCurrentPart(this.endPoint.currentState);
-      this.setCurrentPartIndex(this.endPoint.currentStateIndex);
     },
 
     handleReload() {
-      this.setSongPartItems(this.endPoint.items);
+      this.setSongParts(this.endPoint.items);
       this.setCurrentPart(this.endPoint.currentState);
-      this.setCurrentPartIndex(this.endPoint.currentStateIndex);
+    },
+
+    setSongParts(items: SongPart[]) {
+      if (items && items.length > 0) {
+        this.songParts = items.map((item) => {
+          return { text: item.name, value: item.pr, disabled: false };
+        });
+      } else {
+        this.songParts = [noParts] as ListOption[];
+      }
+    },
+
+    setCurrentPart(currentPart) {
+      if (currentPart) {
+        this.currentPart = {
+          text: currentPart.name,
+          value: currentPart.pr,
+          disabled: false,
+        };
+      } else {
+        this.currentPart = noParts;
+      }
     },
 
     loadSongPart(value: number) {
@@ -92,25 +115,6 @@ export const useSongpartsStore = defineStore('songparts', {
 
     last() {
       this.endPoint.loadLastState();
-    },
-
-    setSongPartItems(items: SongPart[]) {
-      this.items = items.map((item) => {
-        return { text: item.name, value: item.pr, disabled: false };
-      });
-    },
-
-    setCurrentPart(currentPart) {
-      this.currentPart = currentPart;
-    },
-
-    setCurrentPartIndex(index) {
-      this.currentPartIndex = index;
-      if (index < 0) {
-        this.name = 'No Song Parts';
-      } else {
-        this.name = this.currentPart.name;
-      }
     },
   },
 });

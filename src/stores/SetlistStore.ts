@@ -11,7 +11,7 @@ export const useSetlistStore = defineStore('setlist', {
     endPoint: {} as SetListEndPoint,
 
     setlists: [] as ListOption[],
-    currentSetlist: 'No Set List',
+    currentSetlist: {} as ListOption,
 
     songs: [] as ListOption[],
     currentSong: {} as SetListItem,
@@ -67,44 +67,28 @@ export const useSetlistStore = defineStore('setlist', {
     },
 
     handleChanged() {
-      this.setCurrentSong(this.endPoint.currentSong);
-      this.setCurrentSetlist(this.endPoint.name);
+      // handle setlists asynchronous
+      this.endPoint.available().then(this.handleSetlists, this.noSetlists);
+      // handle songs
       this.setSongs(this.endPoint.items);
-      this.endPoint.available().then(this.setSetlists, this.noSetlists);
+      this.setCurrentSong(this.endPoint.currentSong);
     },
 
     handleCurrentSongChanged() {
       this.setCurrentSong(this.endPoint.currentSong);
     },
 
-    loadSetlist(value: string) {
-      this.endPoint.loadSetList(value, true);
-    },
-
-    loadSong(value: number) {
-      this.endPoint.loadSongByProgram(value);
-    },
-
-    first() {
-      this.endPoint.loadFirstSong();
-    },
-
-    last() {
-      this.endPoint.loadLastSong();
-    },
-
-    next() {
-      this.endPoint.loadNextSong(1);
-    },
-
-    previous() {
-      this.endPoint.loadNextSong(-1);
+    handleSetlists(setlists: string[]) {
+      this.setSetlists(setlists);
+      this.setCurrentSetlist(this.endPoint.name);
     },
 
     setSetlists(setlists: string[]) {
-      this.setlists = setlists.map((setlistName) => {
-        return { text: setlistName, value: setlistName, disabled: false };
-      });
+      const list = [] as ListOption[];
+      for (const [index, setlist] of setlists.entries()) {
+        list.push({ text: setlist, value: index, disabled: false });
+      }
+      this.setlists = list;
     },
 
     noSetlists() {
@@ -112,10 +96,17 @@ export const useSetlistStore = defineStore('setlist', {
     },
 
     setCurrentSetlist(name: string) {
-      if (!name) {
-        this.currentSetlist = 'No Set List';
+      let list: ListOption | undefined;
+      if (name) list = this.setlists.find((setlist) => setlist.text == name);
+
+      if (list) {
+        this.currentSetlist = list;
       } else {
-        this.currentSetlist = name;
+        this.currentSetlist = {
+          text: 'No Set Lists',
+          value: -1,
+          disabled: true,
+        };
       }
     },
 
@@ -139,6 +130,30 @@ export const useSetlistStore = defineStore('setlist', {
       } else {
         this.currentSong = song;
       }
+    },
+
+    loadSetlist(value: number) {
+      this.endPoint.loadSetList(this.setlists[value].text, true);
+    },
+
+    loadSong(value: number) {
+      this.endPoint.loadSongByProgram(value);
+    },
+
+    first() {
+      this.endPoint.loadFirstSong();
+    },
+
+    last() {
+      this.endPoint.loadLastSong();
+    },
+
+    next() {
+      this.endPoint.loadNextSong(1);
+    },
+
+    previous() {
+      this.endPoint.loadNextSong(-1);
     },
   },
 });

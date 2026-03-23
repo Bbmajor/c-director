@@ -10,8 +10,8 @@ export default defineComponent({
     link: { type: String, default: '/' },
 
     options: { type: Array<ListOption>, required: true },
-    selected: { type: String, required: true },
-    action: Function as PropType<(item: string) => void>,
+    selected: { type: Number, required: true },
+    action: Function as PropType<(value: number) => void>,
   },
 });
 </script>
